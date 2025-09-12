@@ -1,18 +1,30 @@
 import os
+import sys
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 from app import create_app
-from models.message_models import db, Message
+from models.message_model import db, Message
 from datetime import datetime, timedelta
 import random
 
 
 def create_mock_data():
-    users = [1, 2, 3, 4, 5]
     emails = [
         "john.doe@example.com",
         "jane.smith@example.com",
         "mike.wilson@example.com",
         "sarah.jones@example.com",
-        "alex.brown@example.com"
+        "alex.brown@example.com",
+    ]
+
+    subjects = [
+        "Feedback",
+        "Account credential lost",
+        "Account got hacked",
+        "Appreciation",
     ]
 
     sample_messages = [
@@ -25,22 +37,22 @@ def create_mock_data():
         "Thanks for the quick response!",
         "The documentation is very helpful.",
         "When is the next release scheduled?",
-        "Love the new interface design!"
+        "Love the new interface design!",
     ]
 
-    statuses = ['open', 'closed', 'pending']
+    statuses = ["opened", "closed", "pending"]
 
     messages = []
-    for i in range(20):
+    for i in range(5):
         days_ago = random.randint(0, 30)
         created_date = datetime.now() - timedelta(days=days_ago)
 
         message = Message(
-            userId=random.choice(users),  # type: ignore
+            subject=random.choice(subjects),  # type: ignore
             email=random.choice(emails),  # type: ignore
             message=random.choice(sample_messages),  # type: ignore
-            dateCreated=created_date,  # type: ignore
-            status=random.choice(statuses)  # type: ignore
+            date_created=created_date,  # type: ignore
+            status=random.choice(statuses),  # type: ignore
         )
         messages.append(message)
 
@@ -50,9 +62,9 @@ def create_mock_data():
 def main():
     print("Creating database with mock data...")
 
-    os.environ['FLASK_CONFIG'] = 'development'
+    os.environ["FLASK_CONFIG"] = "development"
 
-    app = create_app('development')
+    app = create_app("development")
 
     print(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
@@ -79,11 +91,10 @@ def main():
         print("\nSample messages:")
         sample_messages = Message.query.limit(5).all()
         for msg in sample_messages:
-            print(
-                f"  ID: {msg.messageId}, User: {msg.userId}, Status: {msg.status}")
+            print(f"  ID: {msg.id}, Status: {msg.status}")
             print(f"  Message: {msg.message[:50]}...")
-            print(f"  Created: {msg.dateCreated}")
-            print("  " + "-"*50)
+            print(f"  Created: {msg.date_created}")
+            print("  " + "-" * 50)
 
 
 if __name__ == "__main__":

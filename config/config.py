@@ -7,10 +7,8 @@ load_dotenv()
 class Config:
     DEBUG = False
     TESTING = False
-    SECRET_KEY = os.environ.get(
-        'SECRET_KEY') or 'dev-secret-key-change-in-production'
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URI') or 'sqlite:///forum.db'
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI")
 
 
 class DevelopmentConfig(Config):
@@ -26,8 +24,8 @@ class ProductionConfig(Config):
 
 
 app_config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentConfig
+    "development": DevelopmentConfig,
+    "testing": TestingConfig,
+    "production": ProductionConfig,
+    "default": DevelopmentConfig,
 }

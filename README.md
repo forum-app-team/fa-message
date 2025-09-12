@@ -11,17 +11,21 @@ A Flask-based microservice for handling message management.
 
 ```
 fa-message/
-├── controllers/
-│   ├── __init__.py
-│   └── message_controller.py
-├── models/
-│   ├── __init__.py
-│   └── message_models.py
-├── routes/
-│   ├── __init__.py
-│   └── message_routes.py
 ├── config/
 │   └── config.py
+├── controllers/
+│   └── message_controller.py
+├── exceptions/
+│   ├── exceptions.py
+│   └── error_handlers.py
+├── models/
+│   └── message_model.py
+├── repositories/
+│   └── message_repository.py
+├── routes/
+│   └── message_routes.py
+├── schemas/
+│   └── message_schema.py
 ├── app.py
 ├── seed.py
 ├── .env
@@ -95,17 +99,17 @@ Or using Flask CLI:
 flask run
 ```
 
-The application will be available at `http://localhost:5000`
+The application will be available at `http://localhost:3003`
 
 ## Database Schema
 
 ### Message Table
 
-| Field         | Type        | Description                        |
-| ------------- | ----------- | ---------------------------------- |
-| `messageId`   | Integer     | Primary key (auto-increment)       |
-| `userId`      | Integer     | User identifier                    |
-| `email`       | String(255) | User email address                 |
-| `message`     | Text        | Message content                    |
-| `dateCreated` | DateTime    | Creation timestamp                 |
-| `status`      | String(20)  | Message status (default: 'active') |
+| Field          | Type         | Description                        |
+| -------------- | ------------ | ---------------------------------- |
+| `id`           | Integer      | Primary key (auto-increment)       |
+| `email`        | String(255)  | User email address                 |
+| `subject`      | String(255)  | Subject of the message             |
+| `message`      | String(1000) | Message content                    |
+| `date_created` | DateTime     | Creation timestamp                 |
+| `status`       | String(20)   | Message status (default: 'active') |
