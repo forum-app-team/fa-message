@@ -5,6 +5,9 @@ class Messages:
     def get_all(self):
         return Message.query.order_by(Message.id.desc()).all()
 
+    def get_all_sorted_by_date(self):
+        return Message.query.order_by(Message.date_created.desc()).all()
+
     def filter_by(self, **kwargs):
         query = Message.query
         if "email" in kwargs:
@@ -19,6 +22,11 @@ class Messages:
         return db.session.get(Message, id)
 
     def create(self, message_item):
+        db.session.add(message_item)
+        db.session.commit()
+        return message_item
+
+    def update(self, message_item):
         db.session.add(message_item)
         db.session.commit()
         return message_item

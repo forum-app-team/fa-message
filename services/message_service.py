@@ -9,7 +9,7 @@ class MessageService:
         self.message_repository = Messages()
 
     def get_all(self):
-        return self.message_repository.get_all()
+        return self.message_repository.get_all_sorted_by_date()
 
     def get_by_id(self, id):
         message = self.message_repository.get_by_id(id)
@@ -31,3 +31,14 @@ class MessageService:
         new_message.message = sanitized_message
 
         return self.message_repository.create(new_message)
+
+    def update(self, id, **kwargs):
+        message = self.get_by_id(id)
+        # Only allow status to be 'open' or 'closed'
+        if "status" in kwargs:
+            status = kwargs["status"]
+            if status not in ["open", "closed"]:
+                raise ValueError("Status must be 'open' or 'closed'.")
+            message.status = status
+        self.message_repository.update(message)
+        return message
