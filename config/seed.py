@@ -40,7 +40,7 @@ def create_mock_data():
         "Love the new interface design!",
     ]
 
-    statuses = ["opened", "closed", "pending"]
+    statuses = ["open", "closed"]
 
     messages = []
     for i in range(5):

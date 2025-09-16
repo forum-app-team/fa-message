@@ -43,3 +43,20 @@ def send_message():
         return jsonify({"error": "Duplicate message detected"}), 409
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+def update_message_status(message_id):
+    data = request.get_json()
+    new_status = data.get("status")
+    if new_status not in ["open", "closed"]:
+        return (
+            jsonify({"error": "Invalid status value."}),
+            400,
+        )
+    try:
+        message = service.update(message_id, status=new_status)
+        return jsonify({"data": message.to_dict()}), 200
+    except NotFoundException:
+        return jsonify({"error": "Message not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

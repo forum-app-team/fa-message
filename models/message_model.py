@@ -13,11 +13,11 @@ class Message(db.Model):
     subject = db.Column(db.String(255), nullable=False)
     message = db.Column(db.String(1000), nullable=False)
     date_created = db.Column(db.DateTime, server_default=func.now(), nullable=False)
-    status = db.Column(db.String(20), default="pending", nullable=False)
+    status = db.Column(db.String(20), default="open", nullable=False)
 
     __table_args__ = (
         CheckConstraint(
-            "status IN ('pending','opened','closed')", name="ck_messages_status_allowed"
+            "status IN ('open','closed')", name="ck_messages_status_allowed"
         ),
     )
 
